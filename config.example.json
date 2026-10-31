@@ -1,0 +1,44 @@
+{
+  "tiktokUsername": "",
+  "signApiKey": "",
+  "port": 8080,
+  "title": "Chùa Online",
+  "maxDevotees": 320,
+  "leaveAfterMinutes": 1,
+  "sound": true,
+  "likeBowEvery": 15,
+  "gifts": [
+    {"names":["rose","hoa hồng"],"label":"Hoa hồng","action":"Thắp nén hương","effect":"incense","icon":"🌹","merit":1},
+    {"names":["tiktok"],"label":"TikTok","action":"Thắp nén hương","effect":"incense","icon":"🎵","merit":1,"hidden":true},
+    {"names":["finger heart","tim ngón tay"],"label":"Tim ngón tay","action":"Thắp nến","effect":"candle","icon":"🫰","merit":5},
+    {"names":["rosa","bouquet","flower","bó hoa","perfume"],"label":"Bó hoa","action":"Dâng hoa sen","effect":"lotus","icon":"💐","merit":10},
+    {"names":["doughnut","donut","bánh donut"],"label":"Bánh donut","action":"Thỉnh chuông","effect":"bell","icon":"🍩","merit":10},
+    {"names":["hand hearts","tay bắn tim"],"label":"Tay bắn tim","action":"Dâng mâm ngũ quả","effect":"fruit","icon":"🫶","merit":20},
+    {"names":["corgi","chó corgi"],"label":"Chó Corgi","action":"Phóng sinh cá chép","effect":"koi","icon":"🐕","merit":49},
+    {"names":["money gun","súng tiền"],"label":"Súng tiền","action":"Thả hoa đăng","effect":"lantern","icon":"💸","merit":99},
+    {"names":["lion","sư tử"],"label":"Sư tử","action":"Rồng Vàng hộ pháp","effect":"dragon","icon":"🦁","merit":299}
+  ],
+  "otherGift": {
+    "action": "Dâng lễ",
+    "effect": "incense",
+    "meritPerDiamond": 1
+  },
+  "chatBubbles": true,
+  "thankYou": "{name} đã {action}",
+  "tts": true,
+  "ttsVolume": 1,
+  "ttsMaxQueue": 5,
+  "ttsGap": 2,
+  "ttsRate": 1.25,
+  "ttsPrefix": "Xin cảm ơn",
+  "music": {
+    "enabled": true,
+    "youtube": [
+      "https://www.youtube.com/watch?v=-cGDM7Xn9Eo&list=RD-cGDM7Xn9Eo&start_radio=1",
+      "https://www.youtube.com/watch?v=-cGDM7Xn9Eo&list=RD-cGDM7Xn9Eo&start_radio=1"
+    ],
+    "volume": 12,
+    "duckVolume": 10,
+    "shuffle": true
+  }
+}

@@ -1,0 +1,16 @@
+# Thư viện & Node portable (tự tải lại khi chạy start-windows.bat / npm install)
+node_modules/
+node/
+
+# Cấu hình cá nhân (có signApiKey) — bản mẫu nằm ở config.example.json
+config.json
+
+# Dữ liệu công đức khi chạy
+merit.json
+
+# Log trình duyệt test
+.gstack/
+
+*.log
+.DS_Store
+Thumbs.db

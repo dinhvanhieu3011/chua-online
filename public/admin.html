@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quản trị — Chùa Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #17100c; --panel: #23180f; --panel2: #2d1f14; --line: #4a3420; --text: #f4e6d0; --muted: #b59c7d;
+    --gold: #f0c35a; --gold2: #ffdf8f; --red: #b8322a; --green: #6fd38a; --warn: #ffb44d; --danger: #ff6b5e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 "Be Vietnam Pro", "Segoe UI", Roboto, Arial, sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: linear-gradient(#2a1a10, #1d130c); border-bottom: 1px solid var(--line); }
+  .bar { max-width: 1100px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 18px; color: var(--gold); white-space: nowrap; }
+  nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  nav button { background: none; border: 1px solid transparent; color: var(--muted); padding: 6px 12px; border-radius: 8px; cursor: pointer; font: inherit; }
+  nav button.on { color: var(--gold2); border-color: var(--line); background: var(--panel2); }
+  .pill { margin-left: auto; font-size: 12px; padding: 4px 10px; border-radius: 99px; background: var(--panel2); border: 1px solid var(--line); white-space: nowrap; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px 16px 120px; }
+  section.tab { display: none; } section.tab.on { display: block; }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .card h2 { margin: 0 0 12px; font-size: 15px; color: var(--gold); display: flex; align-items: center; gap: 8px; }
+  .card h2 .sub { margin-left: auto; font-size: 12px; color: var(--muted); font-weight: 400; }
+  .muted { color: var(--muted); } .small { font-size: 12px; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .row + .row { margin-top: 10px; }
+  button, .btn { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); padding: 7px 12px; }
+  button:hover { border-color: var(--gold); }
+  button.primary { background: var(--gold); border-color: var(--gold); color: #2a1a08; font-weight: 700; }
+  button.danger { color: var(--danger); }
+  button.icon { width: 42px; height: 42px; padding: 0; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; }
+  button.big { width: 56px; height: 56px; font-size: 24px; border-radius: 50%; }
+  button:disabled { opacity: .4; cursor: default; }
+  input, select, textarea { font: inherit; color: var(--text); background: #120c08; border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); }
+  input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--gold); }
+  input[type=range] { accent-color: var(--gold); padding: 0; }
+  textarea { width: 100%; resize: vertical; }
+  label.f { display: grid; gap: 4px; margin-bottom: 12px; }
+  label.f > span { font-size: 12px; color: var(--muted); }
+  label.f input:not([type=checkbox]), label.f select { width: 100%; }
+  label.chk { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; cursor: pointer; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+
+  .stat { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+  .stat b { font-weight: 600; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--muted); margin-right: 6px; }
+  .dot.ok { background: var(--green); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--danger); }
+
+  .now { font-size: 16px; font-weight: 600; color: var(--gold2); min-height: 24px; word-break: break-word; }
+  .prog { height: 6px; background: #120c08; border-radius: 3px; overflow: hidden; margin: 10px 0 4px; cursor: pointer; }
+  .prog > div { height: 100%; background: var(--gold); width: 0; }
+  .alert { border-radius: 8px; padding: 8px 12px; margin-top: 10px; font-size: 13px; }
+  .alert.warn { background: rgba(255,180,77,.12); border: 1px solid rgba(255,180,77,.4); color: var(--warn); }
+  .alert.bad { background: rgba(255,107,94,.12); border: 1px solid rgba(255,107,94,.4); color: var(--danger); }
+  .alert.info { background: rgba(240,195,90,.08); border: 1px solid var(--line); color: var(--muted); }
+
+  .tracks { list-style: none; margin: 0; padding: 0; }
+  .tracks li { display: grid; grid-template-columns: 28px 64px 1fr auto; gap: 10px; align-items: center; padding: 8px; border-radius: 8px; border: 1px solid transparent; }
+  .tracks li + li { border-top-color: var(--line); }
+  .tracks li.cur { background: rgba(240,195,90,.08); border-color: var(--gold); }
+  .tracks .n { color: var(--muted); text-align: right; }
+  .tracks img { width: 64px; height: 36px; object-fit: cover; border-radius: 4px; background: #000; }
+  .tracks .t { min-width: 0; } .tracks .t div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tracks .acts { display: flex; gap: 4px; }
+  .tracks .acts button { padding: 4px 8px; }
+
+  .gifts { width: 100%; border-collapse: collapse; }
+  .gifts th { text-align: left; font-weight: 500; font-size: 12px; color: var(--muted); padding: 4px; }
+  .gifts td { padding: 4px; vertical-align: top; }
+  .gifts input, .gifts select { width: 100%; padding: 5px 7px; }
+  .gifts .w-icon { width: 56px; } .gifts .w-num { width: 80px; } .gifts .w-chk { width: 50px; text-align: center; }
+  .scroll { overflow-x: auto; }
+
+  .tests { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+  .tests button { text-align: left; }
+  .log { height: 320px; overflow: auto; font-size: 13px; background: #120c08; border-radius: 8px; padding: 8px 10px; }
+  .log div { padding: 2px 0; border-bottom: 1px solid #22170f; }
+  .log time { color: var(--muted); margin-right: 6px; font-size: 11px; }
+
+  .savebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: #2a1a10; border-top: 1px solid var(--gold); transform: translateY(110%); transition: transform .2s; }
+  .savebar.on { transform: none; }
+  .savebar .bar { justify-content: flex-end; }
+  .toast { position: fixed; right: 16px; bottom: 80px; z-index: 7; background: var(--panel2); border: 1px solid var(--gold); color: var(--text); padding: 10px 14px; border-radius: 10px; max-width: 360px; opacity: 0; transform: translateY(10px); transition: .2s; pointer-events: none; }
+  .toast.on { opacity: 1; transform: none; }
+  .toast.bad { border-color: var(--danger); }
+  .login { position: fixed; inset: 0; z-index: 9; background: rgba(0,0,0,.8); display: none; align-items: center; justify-content: center; }
+  .login.on { display: flex; }
+  .login .card { width: min(380px, 92vw); }
+  @media (max-width: 600px) { .two { grid-template-columns: 1fr; } .tracks li { grid-template-columns: 22px 1fr auto; } .tracks img { display: none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>🙏 Quản trị Chùa Online</h1>
+    <nav id="nav">
+      <button data-tab="dash" class="on">Bảng điều khiển</button>
+      <button data-tab="music">Nhạc nền</button>
+      <button data-tab="gifts">Quà tặng</button>
+      <button data-tab="settings">Cài đặt</button>
+    </nav>
+    <span class="pill" id="pill"><span class="dot"></span>Đang tải…</span>
+  </div>
+</header>
+
+<main>
+  <!-- ============ BẢNG ĐIỀU KHIỂN ============ -->
+  <section class="tab on" id="tab-dash">
+    <div class="grid">
+      <div class="card">
+        <h2>📡 Trạng thái</h2>
+        <div class="stat">
+          <span class="muted">TikTok LIVE</span><b id="st-live">—</b>
+          <span class="muted">Người xem</span><b id="st-viewers">—</b>
+          <span class="muted">Màn hình game</span><b id="st-games">—</b>
+        </div>
+        <div class="alert info small" id="st-msg" hidden></div>
+        <div class="row" style="margin-top:14px">
+          <a class="btn" href="/" target="_blank">Mở màn hình game ↗</a>
+          <a class="btn" href="/?demo=1" target="_blank">Chạy thử (demo) ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🎵 Đang phát <span class="sub" id="np-count"></span></h2>
+        <div class="now" id="np-title">—</div>
+        <div class="prog" id="np-prog" title="Bấm để tua"><div></div></div>
+        <div class="row small muted" style="justify-content:space-between"><span id="np-time">0:00</span><span id="np-dur">0:00</span></div>
+        <div class="row" style="justify-content:center; margin-top:8px">
+          <button class="icon" data-music="prev" title="Bài trước">⏮</button>
+          <button class="big" id="np-toggle" data-music="toggle" title="Phát / Dừng">▶</button>
+          <button class="icon" data-music="next" title="Bài tiếp theo">⏭</button>
+          <button class="icon" id="np-mute" data-music="mute" title="Tắt / bật tiếng">🔊</button>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <span class="muted small" style="width:70px">Âm lượng</span>
+          <input type="range" min="0" max="100" id="np-vol" style="flex:1">
+          <b id="np-vol-v" style="width:34px;text-align:right">30</b>
+        </div>
+        <div id="np-alert"></div>
+      </div>
+
+      <div class="card">
+        <h2>🧪 Thử hiệu ứng <span class="sub">gửi tới màn hình game</span></h2>
+        <div class="row" style="margin-bottom:10px">
+          <input id="t-name" placeholder="Tên người thử (để trống = ngẫu nhiên)" style="flex:1">
+        </div>
+        <div class="tests" id="tests"></div>
+        <div class="row" style="margin-top:12px">
+          <input id="t-chat" placeholder="Nội dung chat thử" style="flex:1">
+          <button id="t-chat-send">Gửi chat</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📜 Sự kiện LIVE <span class="sub"><button id="log-clear" style="padding:2px 8px">Xoá</button></span></h2>
+        <div class="log" id="log"><div class="muted">Chưa có sự kiện.</div></div>
+      </div>
+
+      <div class="card">
+        <h2>🏆 Bảng Công Đức</h2>
+        <p class="muted small" style="margin-top:0">Xoá toàn bộ điểm công đức trên mọi màn hình game đang mở. Không hoàn tác được.</p>
+        <button class="danger" id="reset-merit">Xoá Bảng Công Đức</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NHẠC NỀN ============ -->
+  <section class="tab" id="tab-music">
+    <div class="grid" style="grid-template-columns: 2fr 1fr">
+      <div class="card">
+        <h2>📃 Danh sách bài giảng / nhạc <span class="sub" id="tr-count"></span></h2>
+        <div class="row" style="align-items:stretch">
+          <textarea id="tr-add" rows="2" placeholder="Dán link YouTube vào đây (mỗi dòng một link). Nhận cả link video, youtu.be, shorts, live và playlist." style="flex:1"></textarea>
+          <button class="primary" id="tr-add-btn">Thêm</button>
+        </div>
+        <div class="alert info small" id="tr-pl" hidden>Danh sách có link <b>playlist</b>: chỉ playlist đầu tiên được phát, các link khác bị bỏ qua.</div>
+        <ul class="tracks" id="tracks" style="margin-top:12px"></ul>
+        <div class="muted small" id="tr-empty" style="padding:20px 0;text-align:center">Chưa có bài nào. Dán link YouTube ở trên rồi bấm <b>Thêm</b>.</div>
+      </div>
+      <div class="card">
+        <h2>⚙️ Cách phát</h2>
+        <label class="chk"><input type="checkbox" data-k="music.enabled"> Bật nhạc nền</label>
+        <label class="chk"><input type="checkbox" data-k="music.shuffle"> Phát ngẫu nhiên</label>
+        <label class="f"><span>Âm lượng (0–100)</span><input type="number" min="0" max="100" data-k="music.volume" data-num></label>
+        <label class="f"><span>Âm lượng khi đang đọc lời cảm ơn (0–100)</span><input type="number" min="0" max="100" data-k="music.duckVolume" data-num></label>
+        <p class="muted small">Hết danh sách sẽ quay lại bài đầu. Chỉ một link thì phát lặp lại mãi.
+          Video bị chủ kênh chặn phát nhúng sẽ tự bỏ qua.</p>
+        <p class="muted small">Thay đổi ở trang này áp dụng khi bấm <b>Lưu</b>. Nút ▶ cạnh từng bài phát ngay bài đó.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUÀ TẶNG ============ -->
+  <section class="tab" id="tab-gifts">
+    <div class="card">
+      <h2>🎁 Quà tặng → hiệu ứng</h2>
+      <p class="muted small" style="margin-top:0">
+        <b>Tên quà TikTok</b>: tên tiếng Anh viết thường, nhiều tên cách nhau bằng dấu phẩy (xem tên quà in ra trong cửa sổ đen hoặc mục Sự kiện LIVE).
+        <b>Ẩn</b>: vẫn tính công đức nhưng không hiện trong bảng "Tặng quà để…".
+      </p>
+      <div class="scroll">
+        <table class="gifts">
+          <thead><tr><th class="w-icon">Biểu tượng</th><th>Tên hiển thị</th><th>Tên quà TikTok</th><th>Hành động</th><th>Hiệu ứng</th><th class="w-num">Công đức</th><th class="w-chk">Ẩn</th><th></th></tr></thead>
+          <tbody id="gift-rows"></tbody>
+        </table>
+      </div>
+      <div class="row" style="margin-top:10px"><button id="gift-add">+ Thêm quà</button></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h2>🪷 Quà khác (không có trong bảng)</h2>
+      <div class="two">
+        <label class="f"><span>Hành động</span><input data-k="otherGift.action"></label>
+        <label class="f"><span>Hiệu ứng</span><select data-k="otherGift.effect" class="effect-select"></select></label>
+        <label class="f"><span>Công đức cho mỗi xu</span><input type="number" min="0" data-k="otherGift.meritPerDiamond" data-num></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CÀI ĐẶT ============ -->
+  <section class="tab" id="tab-settings">
+    <div class="grid">
+      <div class="card">
+        <h2>📱 Kết nối TikTok</h2>
+        <label class="f"><span>Tên TikTok (phần sau chữ @)</span><input data-k="tiktokUsername" placeholder="chuaonline.official"></label>
+        <label class="f"><span>Euler Stream sign API key (để trống nếu không có)</span><input type="password" data-k="signApiKey" autocomplete="off"></label>
+        <p class="muted small">Lưu xong máy chủ tự kết nối lại với tên mới.</p>
+      </div>
+      <div class="card">
+        <h2>🛕 Hiển thị</h2>
+        <label class="f"><span>Tên chùa (hiện trên đầu màn hình)</span><input data-k="title"></label>
+        <div class="two">
+          <label class="f"><span>Số người ngồi tối đa</span><input type="number" min="1" data-k="maxDevotees" data-num></label>
+          <label class="f"><span>Số tim để vái lạy</span><input type="number" min="1" data-k="likeBowEvery" data-num></label>
+          <label class="f"><span>Im lặng bao nhiêu phút thì nhân vật ra về (0 = không bao giờ). Ngoài ra số nhân vật luôn ≤ số người đang xem</span><input type="number" min="0" data-k="leaveAfterMinutes" data-num></label>
+        </div>
+        <label class="f"><span>Câu cảm ơn khi tặng quà — {name} người tặng · {action} hành động · {gift} tên quà</span><input data-k="thankYou"></label>
+        <label class="chk"><input type="checkbox" data-k="chatBubbles"> Hiện bong bóng chat trên đầu nhân vật</label>
+        <label class="chk"><input type="checkbox" data-k="sound"> Bật âm thanh (chuông, mõ, giọng đọc)</label>
+      </div>
+      <div class="card">
+        <h2>🗣️ Giọng đọc cảm ơn</h2>
+        <label class="chk"><input type="checkbox" data-k="tts"> Đọc to lời cảm ơn khi có quà</label>
+        <label class="f"><span>Câu mở đầu</span><input data-k="ttsPrefix"></label>
+        <div class="two">
+          <label class="f"><span>Âm lượng (0–1)</span><input type="number" step="0.1" min="0" max="1" data-k="ttsVolume" data-num></label>
+          <label class="f"><span>Tốc độ đọc</span><input type="number" step="0.05" min="0.5" max="2" data-k="ttsRate" data-num></label>
+          <label class="f"><span>Nghỉ giữa 2 câu (giây)</span><input type="number" step="0.5" min="0" data-k="ttsGap" data-num></label>
+          <label class="f"><span>Hàng chờ tối đa</span><input type="number" min="1" data-k="ttsMaxQueue" data-num></label>
+        </div>
+      </div>
+      <div class="card">
+        <h2>🔐 Bảo mật & máy chủ</h2>
+        <label class="f"><span>Mật khẩu trang quản trị (để mở từ điện thoại / máy khác cùng wifi)</span><input type="password" data-k="adminPassword" autocomplete="new-password" placeholder="Để trống = chỉ mở được trên máy này"></label>
+        <label class="f"><span>Cổng (port) — đổi xong phải chạy lại server</span><input type="number" data-k="port" data-num></label>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="savebar" id="savebar">
+  <div class="bar">
+    <span class="muted">Có thay đổi chưa lưu</span>
+    <button id="discard">Huỷ thay đổi</button>
+    <button class="primary" id="save">💾 Lưu</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="login" id="login">
+  <div class="card">
+    <h2>🔐 Cần mật khẩu quản trị</h2>
+    <p class="muted small" id="login-msg"></p>
+    <input type="password" id="login-pw" placeholder="Mật khẩu" style="width:100%">
+    <div class="row" style="margin-top:12px;justify-content:flex-end"><button class="primary" id="login-btn">Vào</button></div>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const EFFECTS = { incense: '🔥 Thắp hương', candle: '🕯️ Thắp nến', lotus: '🌸 Hoa sen', bell: '🔔 Thỉnh chuông', fruit: '🍑 Mâm ngũ quả', koi: '🐟 Phóng sinh cá', lantern: '🏮 Hoa đăng', dragon: '🐉 Rồng vàng' };
+const PW_KEY = 'chua-online-admin-pw';
+
+let saved = null;   // cấu hình trên máy chủ
+let cfg = null;     // bản đang sửa
+let music = null;   // trạng thái nhạc mới nhất
+let dirty = false;
+
+// ---------- gọi API ----------
+async function api(path, opts = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  const pw = localStorage.getItem(PW_KEY);
+  if (pw) headers['x-admin-password'] = pw;
+  const r = await fetch('/api' + path, { ...opts, headers, body: opts.body ? JSON.stringify(opts.body) : undefined });
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401) { showLogin(j.error); throw new Error(j.error || 'Cần đăng nhập'); }
+  if (!r.ok) throw new Error(j.error || 'Lỗi ' + r.status);
+  return j;
+}
+const cmd = body => api('/cmd', { method: 'POST', body }).catch(e => toast(e.message, true));
+
+function showLogin(msg) {
+  $('#login-msg').textContent = msg || '';
+  $('#login').classList.add('on');
+  $('#login-pw').focus();
+}
+$('#login-btn').onclick = () => { localStorage.setItem(PW_KEY, $('#login-pw').value); $('#login').classList.remove('on'); boot(); };
+$('#login-pw').onkeydown = e => { if (e.key === 'Enter') $('#login-btn').click(); };
+
+let toastTimer;
+function toast(msg, bad) {
+  const t = $('#toast'); t.textContent = msg; t.classList.toggle('bad', !!bad); t.classList.add('on');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3500);
+}
+
+// ---------- tab ----------
+$('#nav').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  $$('#nav button').forEach(x => x.classList.toggle('on', x === b));
+  $$('section.tab').forEach(s => s.classList.toggle('on', s.id === 'tab-' + b.dataset.tab));
+  location.hash = b.dataset.tab;
+};
+if (location.hash) { const b = $(`#nav button[data-tab="${location.hash.slice(1)}"]`); if (b) b.click(); }
+
+// ---------- đọc / ghi trường cấu hình theo data-k="a.b" ----------
+const getK = (o, k) => k.split('.').reduce((a, p) => (a == null ? undefined : a[p]), o);
+function setK(o, k, v) { const ps = k.split('.'); let a = o; for (const p of ps.slice(0, -1)) { if (typeof a[p] !== 'object' || !a[p]) a[p] = {}; a = a[p]; } a[ps.at(-1)] = v; }
+function fillFields() {
+  for (const el of $$('[data-k]')) {
+    const v = getK(cfg, el.dataset.k);
+    if (el.type === 'checkbox') el.checked = !!v;
+    else el.value = v ?? '';
+  }
+}
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (!el.dataset || !el.dataset.k) return;
+  let v = el.type === 'checkbox' ? el.checked : el.value;
+  if ('num' in el.dataset) v = v === '' ? undefined : Number(v);
+  setK(cfg, el.dataset.k, v);
+  markDirty();
+});
+function markDirty() { dirty = JSON.stringify(cfg) !== JSON.stringify(saved); $('#savebar').classList.toggle('on', dirty); }
+addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+$('#save').onclick = async () => {
+  try {
+    const r = await api('/config', { method: 'POST', body: cfg });
+    saved = structuredClone(cfg); markDirty();
+    toast('Đã lưu. ' + (r.notes || []).join(' '));
+  } catch (e) { toast(e.message, true); }
+};
+$('#discard').onclick = () => { cfg = structuredClone(saved); renderAll(); markDirty(); };
+
+// ---------- danh sách nhạc ----------
+const titles = new Map();
+function parseYt(raw) {
+  const s = String(raw || '').trim();
+  if (/^[\w-]{11}$/.test(s)) return { video: s };
+  if (/^(PL|UU|LL|FL|OL|RD)[\w-]{10,}$/.test(s)) return { list: s };
+  try {
+    const u = new URL(s.includes('://') ? s : 'https://' + s);
+    const list = u.searchParams.get('list');
+    let video = u.searchParams.get('v');
+    if (!video && /youtu\.be$/.test(u.hostname)) video = u.pathname.slice(1, 12);
+    if (!video) { const m = u.pathname.match(/\/(?:shorts|live|embed|v)\/([\w-]{11})/); if (m) video = m[1]; }
+    if (video && !/^[\w-]{11}$/.test(video)) video = null;
+    if (!video && !list) return null;
+    return { video, list };
+  } catch { return null; }
+}
+function fetchTitle(link) {
+  if (titles.has(link)) return;
+  titles.set(link, null);
+  api('/yt-title?url=' + encodeURIComponent(link)).then(j => { titles.set(link, j); renderTracks(); }).catch(() => {});
+}
+function tracks() { if (!cfg.music) cfg.music = {}; if (!Array.isArray(cfg.music.youtube)) cfg.music.youtube = []; return cfg.music.youtube; }
+function renderTracks() {
+  const list = tracks();
+  const live = music && !music.playlist ? music.current : -1;
+  const savedList = JSON.stringify(saved?.music?.youtube || []) === JSON.stringify(list);
+  $('#tr-count').textContent = list.length ? list.length + ' bài' : '';
+  $('#tr-empty').hidden = list.length > 0;
+  $('#tr-pl').hidden = !list.some(l => { const p = parseYt(l); return p && p.list && !p.video; }) && !(list.length === 1 && parseYt(list[0])?.list);
+  $('#tracks').innerHTML = list.map((link, i) => {
+    const p = parseYt(link);
+    const info = titles.get(link);
+    if (info === undefined) fetchTitle(link);
+    const isList = p && p.list && !p.video;
+    const thumb = info?.thumb || (p?.video ? `https://i.ytimg.com/vi/${p.video}/mqdefault.jpg` : '');
+    const name = !p ? '<span style="color:var(--danger)">Link không hợp lệ</span>'
+      : info?.title ? esc(info.title) : info?.error ? `<span style="color:var(--warn)">${esc(info.error)}</span>` : isList ? '📃 Playlist YouTube' : '<span class="muted">Đang lấy tên video…</span>';
+    return `<li class="${savedList && i === live ? 'cur' : ''}">
+      <span class="n">${savedList && i === live ? '♪' : i + 1}</span>
+      ${thumb ? `<img src="${esc(thumb)}" alt="" loading="lazy">` : '<span></span>'}
+      <div class="t"><div>${name}</div><div class="muted small">${esc(info?.author ? info.author + ' · ' : '')}<a href="${esc(link)}" target="_blank" style="color:inherit">${esc(link)}</a></div></div>
+      <div class="acts">
+        <button data-act="play" data-i="${i}" title="Phát ngay bài này" ${savedList && !isList ? '' : 'disabled'}>▶</button>
+        <button data-act="up" data-i="${i}" title="Lên" ${i ? '' : 'disabled'}>↑</button>
+        <button data-act="down" data-i="${i}" title="Xuống" ${i < list.length - 1 ? '' : 'disabled'}>↓</button>
+        <button data-act="del" data-i="${i}" class="danger" title="Xoá">✕</button>
+      </div></li>`;
+  }).join('');
+}
+$('#tracks').onclick = e => {
+  const b = e.target.closest('button[data-act]'); if (!b) return;
+  const i = +b.dataset.i, list = tracks();
+  if (b.dataset.act === 'play') return cmd({ type: 'music', action: 'playIndex', value: i });
+  if (b.dataset.act === 'up') [list[i - 1], list[i]] = [list[i], list[i - 1]];
+  if (b.dataset.act === 'down') [list[i + 1], list[i]] = [list[i], list[i + 1]];
+  if (b.dataset.act === 'del') list.splice(i, 1);
+  renderTracks(); markDirty();
+};
+$('#tr-add-btn').onclick = () => {
+  const lines = $('#tr-add').value.split(/[\s,]+/).map(s => s.trim()).filter(Boolean);
+  const bad = lines.filter(l => !parseYt(l));
+  const good = lines.filter(l => parseYt(l));
+  tracks().push(...good);
+  $('#tr-add').value = bad.join('\n');
+  if (bad.length) toast(`${bad.length} link không phải YouTube, chưa thêm.`, true);
+  else if (good.length) toast(`Đã thêm ${good.length} bài. Bấm Lưu để áp dụng.`);
+  renderTracks(); markDirty();
+};
+
+// ---------- quà tặng ----------
+function effectOptions(sel) { return Object.entries(EFFECTS).map(([k, v]) => `<option value="${k}" ${k === sel ? 'selected' : ''}>${v}</option>`).join(''); }
+function renderGifts() {
+  $('#gift-rows').innerHTML = (cfg.gifts || []).map((g, i) => `<tr data-i="${i}">
+    <td class="w-icon"><input data-g="icon" value="${esc(g.icon)}"></td>
+    <td><input data-g="label" value="${esc(g.label)}"></td>
+    <td><input data-g="names" value="${esc((g.names || []).join(', '))}" placeholder="rose, hoa hồng"></td>
+    <td><input data-g="action" value="${esc(g.action)}"></td>
+    <td><select data-g="effect">${effectOptions(g.effect)}</select></td>
+    <td class="w-num"><input type="number" min="0" data-g="merit" value="${esc(g.merit)}"></td>
+    <td class="w-chk"><input type="checkbox" data-g="hidden" ${g.hidden ? 'checked' : ''}></td>
+    <td><button class="danger" data-del="${i}" title="Xoá">✕</button></td></tr>`).join('');
+  for (const s of $$('.effect-select')) s.innerHTML = effectOptions(getK(cfg, s.dataset.k));
+}
+$('#gift-rows').addEventListener('input', e => {
+  const el = e.target, tr = el.closest('tr'); if (!tr || !el.dataset.g) return;
+  const g = cfg.gifts[+tr.dataset.i], k = el.dataset.g;
+  if (k === 'names') g.names = el.value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+  else if (k === 'merit') g.merit = Number(el.value) || 0;
+  else if (k === 'hidden') { if (el.checked) g.hidden = true; else delete g.hidden; }
+  else g[k] = el.value;
+  markDirty(); renderTests();
+});
+$('#gift-rows').onclick = e => {
+  const b = e.target.closest('button[data-del]'); if (!b) return;
+  cfg.gifts.splice(+b.dataset.del, 1); renderGifts(); renderTests(); markDirty();
+};
+$('#gift-add').onclick = () => {
+  if (!Array.isArray(cfg.gifts)) cfg.gifts = [];
+  cfg.gifts.push({ names: [], label: 'Quà mới', action: 'Dâng lễ', effect: 'incense', icon: '🎁', merit: 1 });
+  renderGifts(); renderTests(); markDirty();
+};
+
+// ---------- thử hiệu ứng ----------
+function renderTests() {
+  const gifts = (saved?.gifts || []).filter(g => (g.names || []).length);
+  $('#tests').innerHTML = `<button data-ev="join">🚶 Có người vào</button><button data-ev="like">❤️ Thả tim</button><button data-ev="follow">⭐ Theo dõi</button>`
+    + gifts.map(g => `<button data-ev="gift" data-gift="${esc(g.names[0])}">${esc(g.icon || '🎁')} ${esc(g.label || g.names[0])}</button>`).join('');
+}
+const testName = () => $('#t-name').value.trim() || undefined;
+$('#tests').onclick = e => {
+  const b = e.target.closest('button[data-ev]'); if (!b) return;
+  cmd({ type: 'test', event: b.dataset.ev, gift: b.dataset.gift, name: testName() });
+};
+$('#t-chat-send').onclick = () => cmd({ type: 'test', event: 'chat', text: $('#t-chat').value.trim() || undefined, name: testName() });
+$('#t-chat').onkeydown = e => { if (e.key === 'Enter') $('#t-chat-send').click(); };
+$('#reset-merit').onclick = () => { if (confirm('Xoá toàn bộ Bảng Công Đức? Không hoàn tác được.')) cmd({ type: 'reset-merit' }).then(() => toast('Đã xoá Bảng Công Đức.')); };
+
+// ---------- điều khiển nhạc ----------
+const fmt = s => { s = Math.max(0, Math.floor(s || 0)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = String(s % 60).padStart(2, '0'); return h ? `${h}:${String(m).padStart(2, '0')}:${x}` : `${m}:${x}`; };
+let volDragging = false, volTimer = null, localTime = 0, localAt = 0;
+$$('[data-music]').forEach(b => b.onclick = () => cmd({ type: 'music', action: b.dataset.music }));
+$('#np-vol').oninput = e => {
+  volDragging = true;
+  const v = +e.target.value;
+  $('#np-vol-v').textContent = v;
+  clearTimeout(volTimer);
+  volTimer = setTimeout(() => { volDragging = false; }, 1500);
+  cmd({ type: 'music', action: 'volume', value: v });
+  setK(cfg, 'music.volume', v); fillFields(); markDirty();
+};
+$('#np-prog').onclick = e => {
+  if (!music || !music.duration) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  cmd({ type: 'music', action: 'seek', value: Math.round((e.clientX - r.left) / r.width * music.duration) });
+};
+function renderMusic() {
+  const m = music;
+  const has = m && m.ready;
+  $('#np-title').textContent = has ? (m.title || (m.playing ? 'Đang tải…' : '—')) : '—';
+  $('#np-count').textContent = has && m.count ? (m.playlist ? 'Playlist · ' : '') + `bài ${(m.current ?? 0) + 1}/${m.count}` : '';
+  $('#np-toggle').textContent = has && m.playing ? '⏸' : '▶';
+  $('#np-mute').textContent = has && m.muted ? '🔇' : '🔊';
+  $$('[data-music]').forEach(b => b.disabled = !has);
+  if (has && !volDragging) { $('#np-vol').value = m.volume; $('#np-vol-v').textContent = m.volume; }
+  if (has) { localTime = m.time; localAt = performance.now(); }
+  tickProgress();
+  let alert = '';
+  const games = lastGames;
+  if (games === 0) alert = '<div class="alert warn">Chưa có màn hình game nào đang mở — nhạc phát trên màn hình game (OBS / LIVE Studio / Chrome), không phát ở trang này.</div>';
+  else if (!m || !m.ready) alert = (saved?.music?.youtube || []).length ? '' : '<div class="alert info">Chưa có bài nào. Vào tab <b>Nhạc nền</b> để thêm link YouTube.</div>';
+  else if (m.blocked) alert = '<div class="alert warn">Trình duyệt đang chặn tự phát tiếng. Bấm chuột vào màn hình game một lần (trong OBS: chuột phải nguồn → <b>Interact</b> → bấm vào trang).</div>';
+  if (m && m.error) alert += `<div class="alert bad">Bài vừa rồi lỗi: ${esc(m.error)} — đã chuyển bài khác.</div>`;
+  $('#np-alert').innerHTML = alert;
+  renderTracks();
+}
+function tickProgress() {
+  const m = music;
+  const t = m && m.playing ? localTime + (performance.now() - localAt) / 1000 : localTime;
+  const d = m?.duration || 0;
+  $('#np-time').textContent = fmt(Math.min(t, d || t));
+  $('#np-dur').textContent = d ? fmt(d) : (m?.playing ? 'LIVE' : '0:00');
+  $('#np-prog > div').style.width = d ? Math.min(100, t / d * 100) + '%' : '0';
+}
+setInterval(tickProgress, 500);
+
+// ---------- trạng thái + nhật ký qua WebSocket ----------
+let lastGames = null;
+const STATE_TEXT = { connected: ['ok', 'Đã kết nối'], connecting: ['warn', 'Đang kết nối…'], starting: ['warn', 'Đang khởi động…'], offline: ['bad', 'Chưa kết nối'], ended: ['warn', 'Live đã kết thúc'], 'no-username': ['warn', 'Chưa điền tên TikTok'] };
+function renderStatus(st) {
+  const [cls, txt] = STATE_TEXT[st.state] || ['bad', st.state];
+  const who = st.username && st.username !== 'ten_tiktok_cua_ban' ? ' @' + esc(st.username) : '';
+  $('#st-live').innerHTML = `<span class="dot ${cls}"></span>${txt}${who}`;
+  $('#pill').innerHTML = `<span class="dot ${cls}"></span>${txt}${who}`;
+  $('#st-msg').hidden = !st.message || st.state === 'connected';
+  $('#st-msg').textContent = st.message || '';
+}
+function log(html) {
+  const box = $('#log');
+  if (box.firstElementChild?.classList.contains('muted')) box.innerHTML = '';
+  const d = document.createElement('div');
+  d.innerHTML = `<time>${new Date().toLocaleTimeString('vi-VN')}</time>${html}`;
+  box.prepend(d);
+  while (box.children.length > 200) box.lastElementChild.remove();
+}
+$('#log-clear').onclick = () => { $('#log').innerHTML = '<div class="muted">Chưa có sự kiện.</div>'; };
+function onEvent(ev) {
+  const n = ev.user ? `<b>${esc(ev.user.name)}</b>` : '';
+  if (ev.type === 'status') renderStatus(ev);
+  else if (ev.type === 'music-state') { music = ev.state; renderMusic(); }
+  else if (ev.type === 'viewers') $('#st-viewers').textContent = ev.count;
+  else if (ev.type === 'join') log(`🚶 ${n} vào chùa`);
+  else if (ev.type === 'chat') log(`💬 ${n}: ${esc(ev.text)}`);
+  else if (ev.type === 'gift') log(`🎁 ${n} tặng <b>${esc(ev.gift?.name || '?')}</b> ×${ev.gift?.count || 1} <span class="muted small">(${ev.gift?.diamonds || 1} xu)</span>`);
+  else if (ev.type === 'follow') log(`⭐ ${n} theo dõi`);
+  else if (ev.type === 'share') log(`↗️ ${n} chia sẻ`);
+  else if (ev.type === 'config' && !dirty) api('/config').then(c => { saved = c; cfg = structuredClone(c); renderAll(); }).catch(() => {});
+}
+function connectWs() {
+  const ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
+  ws.onmessage = e => { try { onEvent(JSON.parse(e.data)); } catch (err) { console.warn(err); } };
+  ws.onclose = () => { $('#pill').innerHTML = '<span class="dot bad"></span>Mất kết nối máy chủ'; setTimeout(connectWs, 3000); };
+}
+async function pollState() {
+  try {
+    const s = await api('/state');
+    lastGames = s.games;
+    $('#st-games').innerHTML = s.games ? `<span class="dot ok"></span>${s.games} đang mở` : '<span class="dot warn"></span>Chưa mở';
+    if (s.viewers) $('#st-viewers').textContent = s.viewers;
+    if (!s.games && music) { music = null; }
+    renderMusic();
+  } catch { /* bỏ qua */ }
+}
+
+function renderAll() { fillFields(); renderTracks(); renderGifts(); renderTests(); renderMusic(); }
+let booted = false;
+async function boot() {
+  try {
+    saved = await api('/config');
+    cfg = structuredClone(saved);
+    renderAll();
+    if (!booted) { booted = true; connectWs(); pollState(); setInterval(pollState, 4000); }
+  } catch (e) { if (!$('#login').classList.contains('on')) toast(e.message, true); }
+}
+boot();
+})();
+</script>
+</body>
+</html>

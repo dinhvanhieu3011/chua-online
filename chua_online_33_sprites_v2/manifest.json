@@ -1,0 +1,202 @@
+{
+  "description": "Chùa Online sprite production preview v2",
+  "total_characters": 11,
+  "total_poses": 33,
+  "poses": [
+    "ngoi",
+    "lay",
+    "di"
+  ],
+  "quality_disclosure": "9 images are full-resolution standalone generated renderings. 24 new sprites are individual crops from a newly generated multi-character chibi 3D reference sheet and have been enlarged, not independent high-resolution generations; they do not all reach the original grandmother render quality. Some style and Vietnamese clothing mismatches remain.",
+  "sprites": [
+    {
+      "file": "cuba_ngoi.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "cuba_lay.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "cuba_di.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "aodaitrang_ngoi.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "aodaitrang_lay.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "aodaitrang_di.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "suthay_ngoi.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "suthay_lay.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "suthay_di.png",
+      "source": "standalone image generation",
+      "pixel_detail": "full resolution original"
+    },
+    {
+      "file": "cuong_ngoi.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Traditional brown grandfather; reference does not fully reproduce khăn xếp",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "cuong_lay.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Traditional brown grandfather; reference does not fully reproduce khăn xếp",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "cuong_di.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Traditional brown grandfather; reference does not fully reproduce khăn xếp",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "aodaido_ngoi.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young Vietnamese woman; garment recolored from independent CGI sheet character",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "aodaido_lay.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young Vietnamese woman; garment recolored from independent CGI sheet character",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "aodaido_di.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young Vietnamese woman; garment recolored from independent CGI sheet character",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "changtrai_ngoi.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young Vietnamese man; garment recolored from independent CGI sheet character",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "changtrai_lay.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young Vietnamese man; garment recolored from independent CGI sheet character",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "changtrai_di.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young Vietnamese man; garment recolored from independent CGI sheet character",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "suco_ngoi.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Nun in light grey, headpiece on source rather than fully shaved",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "suco_lay.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Nun in light grey, headpiece on source rather than fully shaved",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "suco_di.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Nun in light grey, headpiece on source rather than fully shaved",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "kinhbac_ngoi.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Traditional patterned clothing, not fully accurate Kinh Bắc áo tứ thân",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "kinhbac_lay.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Traditional patterned clothing, not fully accurate Kinh Bắc áo tứ thân",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "kinhbac_di.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Traditional patterned clothing, not fully accurate Kinh Bắc áo tứ thân",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "betrai_ngoi.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Boy with dark hair; outfit recolored to cream; no trái đào tuft",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "betrai_lay.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Boy with dark hair; outfit recolored to cream; no trái đào tuft",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "betrai_di.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Boy with dark hair; outfit recolored to cream; no trái đào tuft",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "begai_ngoi.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Girl with twin braids and ribbons; outfit recolored to yellow",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "begai_lay.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Girl with twin braids and ribbons; outfit recolored to yellow",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "begai_di.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Girl with twin braids and ribbons; outfit recolored to yellow",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "phattu_ngoi.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young lay Buddhist in brown tunic",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "phattu_lay.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young lay Buddhist in brown tunic",
+      "pixel_detail": "lower than standalone render"
+    },
+    {
+      "file": "phattu_di.png",
+      "source": "new composite 3D model crop + upscale",
+      "notes": "Young lay Buddhist in brown tunic",
+      "pixel_detail": "lower than standalone render"
+    }
+  ]
+}

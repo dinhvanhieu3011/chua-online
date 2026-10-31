@@ -1,0 +1,16 @@
+{
+  "name": "chua-online",
+  "version": "1.0.0",
+  "description": "Game tương tác TikTok LIVE: Chùa Online",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.3.0",
+    "tiktok-live-connector": "^2.5.0",
+    "ws": "^8.22.0"
+  }
+}
